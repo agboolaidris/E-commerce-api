@@ -25,9 +25,10 @@ const product_1 = __importDefault(require("./routes/product"));
 dotenv_1.config();
 const Main = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = express_1.default();
-    const PORT = 5000 || process.env.PORT;
+    const PORT = process.env.PORT || 5000;
+    const DB = process.env.MONGODB_URL || "mongodb://localhost/db-template";
     try {
-        yield mongoose_1.default.connect("mongodb://localhost/db-template", {
+        yield mongoose_1.default.connect(DB, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useFindAndModify: false,

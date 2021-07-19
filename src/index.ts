@@ -8,15 +8,17 @@ import { config } from "dotenv";
 import auth from "./routes/auth";
 import category from "./routes/category";
 import product from "./routes/product";
+import { debugPort } from "node:process";
 
 //set env
 config();
 
 const Main = async () => {
   const app = express();
-  const PORT = 5000 || process.env.PORT;
+  const PORT = process.env.PORT || 5000;
+  const DB = process.env.MONGODB_URL || "mongodb://localhost/db-template";
   try {
-    await mongoose.connect("mongodb://localhost/db-template", {
+    await mongoose.connect(DB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
