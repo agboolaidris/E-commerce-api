@@ -18,7 +18,11 @@ import { productValid, productValidEdit } from "../validations/productValid";
 const router = Router();
 
 //@desc create product
-router.post("/", [adminMiddleware], createProduct);
+router.post(
+  "/",
+  [adminMiddleware, trim, productValid, upload("array", "images", true)],
+  createProduct
+);
 
 //@desc fetch all products
 router.get("/", fetchProducts);
