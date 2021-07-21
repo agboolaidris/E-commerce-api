@@ -20,7 +20,7 @@ const router = Router();
 //@desc create product
 router.post(
   "/",
-  [adminMiddleware, trim, productValid, upload("array", "images", true)],
+  [adminMiddleware, upload("array", "images", false), trim, productValid],
   createProduct
 );
 
@@ -36,7 +36,7 @@ router.get("/category/:id", fetchProductsByCategory);
 //@desc put all product
 router.put(
   "/:id",
-  [adminMiddleware, trim, productValidEdit, upload("array", "images", false)],
+  [adminMiddleware, upload("array", "images", false), trim, productValidEdit],
   editProduct
 );
 

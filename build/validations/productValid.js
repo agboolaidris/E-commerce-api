@@ -8,14 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productValidEdit = exports.productValid = void 0;
 const category_1 = require("../models/category");
 const product_1 = require("../models/product");
+const fs_1 = __importDefault(require("fs"));
 const productValid = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, description, price, quantity, category, offer } = req.body;
+        req.body.files = req.files ? req.files : undefined;
+        const { name, description, price, quantity, category, offer, files } = req.body;
         const error = {};
+        if (req.files == undefined || req.files.length < 1)
+            error.images = "images is required and most be in jpeg/jpg/png format";
         if (!name)
             error.name = "name of the product is required";
         if (!description)
@@ -26,8 +33,14 @@ const productValid = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             error.quantity = "quantity of the product is required";
         if (!category)
             error.category = "category of the product is required";
-        if (Object.keys(error).length > 0)
+        if (Object.keys(error).length > 0) {
+            if (req.files !== undefined) {
+                files.map((file) => {
+                    fs_1.default.unlinkSync(`uploads/${file.path.split("uploads")[1]}`);
+                });
+            }
             return res.status(400).json(error);
+        }
         const confirmName = yield product_1.Product.findOne({ name });
         if (confirmName)
             error.name = "name already exist";
@@ -35,7 +48,7 @@ const productValid = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             error.name = "name must be two or more characters";
         const confirmCategory = yield category_1.Category.findById(category);
         if (!confirmCategory)
-            error.category = "category _id is required";
+            error.category = "category id is invalid";
         if (description.length < 20)
             error.description = "description must be grater than 10 character";
         if (isNaN(price) || price < 1)
@@ -44,13 +57,19 @@ const productValid = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             error.quantity = "quantity most be a number and most be greater than 0";
         if ((offer && isNaN(offer)) || offer < 1)
             error.offer = "quantity most be a number and most be greater than 0";
-        if (Object.keys(error).length > 0)
+        if (Object.keys(error).length > 0) {
+            if (req.files !== undefined) {
+                files.map((file) => {
+                    fs_1.default.unlinkSync(`uploads/${file.path.split("uploads")[1]}`);
+                });
+            }
             return res.status(400).json(error);
+        }
+        next();
     }
     catch (error) {
         res.status(400).json({ error: error.message });
     }
-    next();
 });
 exports.productValid = productValid;
 const productValidEdit = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -81,11 +100,11 @@ const productValidEdit = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             error.offer = "quantity most be a number and most be greater than 0";
         if (Object.keys(error).length > 0)
             return res.status(400).json(error);
+        next();
     }
     catch (error) {
         res.status(400).json({ error: error.message });
     }
-    next();
 });
 exports.productValidEdit = productValidEdit;
 //# sourceMappingURL=productValid.js.map

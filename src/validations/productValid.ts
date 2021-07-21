@@ -1,15 +1,22 @@
 import { Response, Request, NextFunction } from "express";
 import { Category } from "../models/category";
 import { Product } from "../models/product";
+import fs from "fs";
 export const productValid = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { name, description, price, quantity, category, offer } = req.body;
+    req.body.files = req.files ? req.files : undefined;
+
+    const { name, description, price, quantity, category, offer, files } =
+      req.body;
 
     const error: any = {};
+
+    if (req.files == undefined || req.files.length < 1)
+      error.images = "images is required and most be in jpeg/jpg/png format";
 
     if (!name) error.name = "name of the product is required";
 
@@ -22,7 +29,14 @@ export const productValid = async (
 
     if (!category) error.category = "category of the product is required";
 
-    if (Object.keys(error).length > 0) return res.status(400).json(error);
+    if (Object.keys(error).length > 0) {
+      if (req.files !== undefined) {
+        files.map((file: any) => {
+          fs.unlinkSync(`uploads/${file.path.split("uploads")[1]}`);
+        });
+      }
+      return res.status(400).json(error);
+    }
 
     const confirmName = await Product.findOne({ name });
     if (confirmName) error.name = "name already exist";
@@ -31,7 +45,7 @@ export const productValid = async (
       error.name = "name must be two or more characters";
 
     const confirmCategory = await Category.findById(category);
-    if (!confirmCategory) error.category = "category _id is required";
+    if (!confirmCategory) error.category = "category id is invalid";
 
     if (description.length < 20)
       error.description = "description must be grater than 10 character";
@@ -45,12 +59,18 @@ export const productValid = async (
     if ((offer && isNaN(offer)) || offer < 1)
       error.offer = "quantity most be a number and most be greater than 0";
 
-    if (Object.keys(error).length > 0) return res.status(400).json(error);
+    if (Object.keys(error).length > 0) {
+      if (req.files !== undefined) {
+        files.map((file: any) => {
+          fs.unlinkSync(`uploads/${file.path.split("uploads")[1]}`);
+        });
+      }
+      return res.status(400).json(error);
+    }
+    next();
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-
-  next();
 };
 
 export const productValidEdit = async (
@@ -91,9 +111,9 @@ export const productValidEdit = async (
       error.offer = "quantity most be a number and most be greater than 0";
 
     if (Object.keys(error).length > 0) return res.status(400).json(error);
+
+    next();
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
-
-  next();
 };

@@ -18,10 +18,6 @@ const product_1 = require("../models/product");
 const slug_1 = __importDefault(require("slug"));
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (req.files == undefined || req.files.length < 1)
-            return res.status(400).json({
-                image: "images is required and most be in jpeg/jpg/png format",
-            });
         req.body.files = req.files;
         const { price, description, category, name, quantity, offer, files } = req.body;
         let images = [];
