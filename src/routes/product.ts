@@ -36,7 +36,7 @@ router.get("/category/:id", fetchProductsByCategory);
 //@desc put all product
 router.put(
   "/:id",
-  [adminMiddleware, trim, upload("array", "images", false), productValidEdit],
+  [adminMiddleware, trim, productValidEdit, upload("array", "images", false)],
   editProduct
 );
 

@@ -19,7 +19,7 @@ router.get("/:id", product_1.fetchProduct);
 //@desc fetch products by category
 router.get("/category/:id", product_1.fetchProductsByCategory);
 //@desc put all product
-router.put("/:id", [auth_1.adminMiddleware, trim_1.default, multer_1.default("array", "images", false), productValid_1.productValidEdit], product_1.editProduct);
+router.put("/:id", [auth_1.adminMiddleware, trim_1.default, productValid_1.productValidEdit, multer_1.default("array", "images", false)], product_1.editProduct);
 //@desc delete all product
 router.delete("/:id", [auth_1.adminMiddleware], product_1.deleteProduct);
 exports.default = router;
