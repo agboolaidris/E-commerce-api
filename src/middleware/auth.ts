@@ -45,9 +45,10 @@ export const adminMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const cookie = req.cookies["access-token"];
+    const cookie = await req.cookies["access-token"];
 
-    if (!cookie) return res.status(401).json({ error: "unathorize" });
+    if (!cookie)
+      return res.status(401).json({ error: "unathorize, kindly login" });
 
     if (!process.env.JWT_SECRET)
       return res

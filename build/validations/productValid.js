@@ -48,7 +48,7 @@ const productValid = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             return res.status(400).json(error);
     }
     catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
     next();
 });
@@ -83,7 +83,7 @@ const productValidEdit = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             return res.status(400).json(error);
     }
     catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(400).json({ error: error.message });
     }
     next();
 });

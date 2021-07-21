@@ -44,9 +44,9 @@ const userMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 exports.userMiddleware = userMiddleware;
 const adminMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const cookie = req.cookies["access-token"];
+        const cookie = yield req.cookies["access-token"];
         if (!cookie)
-            return res.status(401).json({ error: "unathorize" });
+            return res.status(401).json({ error: "unathorize, kindly login" });
         if (!process.env.JWT_SECRET)
             return res
                 .status(500)
