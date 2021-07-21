@@ -20,7 +20,7 @@ const router = Router();
 //@desc create product
 router.post(
   "/",
-  [adminMiddleware, trim, upload("array", "images", true), productValid],
+  [adminMiddleware, trim, productValid, upload("array", "images", true)],
   createProduct
 );
 
