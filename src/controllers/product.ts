@@ -68,7 +68,9 @@ export const editProduct = async (req: Request, res: Response) => {
     if (images.length > 0) {
       edit.images = images;
       data.images.map((image: string) => {
-        fs.unlinkSync(`uploads/-${image.split("-")[1]}`);
+        fs.unlinkSync(
+          `uploads/-${image.split("-")[image.split("-").length - 1]}`
+        );
       });
     }
 

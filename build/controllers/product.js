@@ -69,7 +69,7 @@ const editProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (images.length > 0) {
             edit.images = images;
             data.images.map((image) => {
-                fs_1.default.unlinkSync(`uploads/-${image.split("-")[1]}`);
+                fs_1.default.unlinkSync(`uploads/-${image.split("-")[image.split("-").length - 1]}`);
             });
         }
         const response = yield product_1.Product.findByIdAndUpdate(req.params.id, edit, {
