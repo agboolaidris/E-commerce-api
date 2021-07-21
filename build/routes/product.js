@@ -11,7 +11,7 @@ const multer_1 = __importDefault(require("../middleware/multer"));
 const productValid_1 = require("../validations/productValid");
 const router = express_1.Router();
 //@desc create product
-router.post("/", [auth_1.adminMiddleware, trim_1.default, productValid_1.productValid, multer_1.default("array", "images", true)], product_1.createProduct);
+router.post("/", [auth_1.adminMiddleware], product_1.createProduct);
 //@desc fetch all products
 router.get("/", product_1.fetchProducts);
 //@desc fetch single product
