@@ -118,7 +118,7 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!data)
             return res.status(404).json({ error: "product not found" });
         data.images.map((image) => {
-            fs_1.default.unlinkSync(`uploads/-${image.split("-")[1]}`);
+            fs_1.default.unlinkSync(`uploads/-${image.split("-")[image.split("-").length - 1]}`);
         });
         const response = yield product_1.Product.findByIdAndDelete(req.params.id);
         if (!response)

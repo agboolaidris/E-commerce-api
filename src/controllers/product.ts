@@ -118,7 +118,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
     if (!data) return res.status(404).json({ error: "product not found" });
 
     data.images.map((image: string) => {
-      fs.unlinkSync(`uploads/-${image.split("-")[1]}`);
+      fs.unlinkSync(
+        `uploads/-${image.split("-")[image.split("-").length - 1]}`
+      );
     });
 
     const response = await Product.findByIdAndDelete(req.params.id);
