@@ -5,18 +5,21 @@ import { Category, CategoryInput } from "../models/category";
 import categoryFunc from "../helpers/category";
 import { Product } from "../models/product";
 
+//create Category controller
 export const createCategory = async (req: Request, res: Response) => {
   try {
     const { name, parentId } = req.body;
+    //check if name is available
     if (!name) return res.status(400).json({ name: "name is required" });
 
+    //check if the length of name is less than 2 characters
     if (name.length < 2)
       return res
         .status(400)
         .json({ name: "name most be greater than 2 character" });
 
+    //check if the the already exist
     const checkname = await Category.findOne({ name });
-
     if (checkname) return res.status(400).json({ name: "name already exist" });
 
     const categoryObj: any = {
@@ -24,18 +27,13 @@ export const createCategory = async (req: Request, res: Response) => {
       slug: slug(req.body.name),
     };
 
-    if (req.file) {
-      categoryObj.image = `${process.env.API}${
-        req.file.path.split("uploads")[1]
-      }`;
-    }
-
+    //check if parentId exist and then attach it to the data
     if (req.body.parentId) {
       categoryObj.parentId = parentId;
     }
 
     const category = new Category(categoryObj);
-    await category.save();
+    await category.save(); //save category
 
     res.json(category);
   } catch (error) {
@@ -43,6 +41,7 @@ export const createCategory = async (req: Request, res: Response) => {
   }
 };
 
+//fetch category controler
 export const fetchCategory = async (req: Request, res: Response) => {
   try {
     const data = await Category.find();
@@ -55,27 +54,26 @@ export const fetchCategory = async (req: Request, res: Response) => {
   }
 };
 
+//delete category controller
 export const deleteCategory = async (req: Request, res: Response) => {
   try {
+    //check if the product is attach to the category
     const checkProduct = await Product.find({ category: req.params.id });
-
     if (checkProduct.length > 0)
       return res.status(400).json({
         error: "can't delete a category that have product attached to it",
       });
 
+    //check if the category has sub-category
     const checkSubCategory = await Category.find({ parentId: req.params.id });
-
     if (checkSubCategory.length > 0) {
       checkSubCategory.map(async (category: CategoryInput) => {
         category.parentId = undefined;
         await category.save();
       });
     }
-    // return res.status(400).json({
-    //   error: "can't delete a category that have subCategory attached to it",
-    // });
 
+    //delete the category
     const data = await Category.findByIdAndDelete(req.params.id);
     if (!data)
       return res.status(404).json({ error: "no such a category in database" });
@@ -86,10 +84,12 @@ export const deleteCategory = async (req: Request, res: Response) => {
   }
 };
 
+// edit category controller
 export const editCategory = async (req: Request, res: Response) => {
   try {
     const { name, parentId } = req.body;
 
+    //check if name is available
     if (!name) return res.status(400).json({ name: "name is required" });
 
     if (name.length < 2)
@@ -97,6 +97,7 @@ export const editCategory = async (req: Request, res: Response) => {
         .status(400)
         .json({ name: "name most be greater than 2 character" });
 
+    //update the category
     const data = await Category.findByIdAndUpdate(
       req.params.id,
       {

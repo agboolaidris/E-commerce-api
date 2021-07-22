@@ -9,15 +9,16 @@ import {
   fetchProduct,
   fetchProducts,
   fetchProductsByCategory,
-} from "../controllers/product";
+} from "../controllers/product"; //product controller
 
-import { adminMiddleware } from "../middleware/auth";
-import upload from "../middleware/multer";
-import { productValid, productValidEdit } from "../validations/productValid";
+import { adminMiddleware } from "../middleware/auth"; //admin authentication middleware
+import upload from "../middleware/multer"; // multer multipart from middleware
+import { productValid, productValidEdit } from "../validations/productValid"; //product validation middleware
 
 const router = Router();
 
 //@desc create product
+//private route and only admin authorize
 router.post(
   "/",
   [adminMiddleware, upload("array", "images", false), trim, productValid],
@@ -34,6 +35,7 @@ router.get("/:id", fetchProduct);
 router.get("/category/:id", fetchProductsByCategory);
 
 //@desc put all product
+//private route and only admin authorize
 router.put(
   "/:id",
   [adminMiddleware, upload("array", "images", false), trim, productValidEdit],
@@ -41,6 +43,7 @@ router.put(
 );
 
 //@desc delete all product
+//private route and only admin authorize
 router.delete("/:id", [adminMiddleware], deleteProduct);
 
 export default router;

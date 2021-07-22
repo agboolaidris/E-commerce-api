@@ -11,7 +11,7 @@ export const registerValid = async (
   try {
     const errors: any = {};
     const { username, email, password, confirmpassword, mobile } = req.body;
-
+    
     if (!username) errors.username = "username is required";
 
     if (!email) errors.email = "email is required";

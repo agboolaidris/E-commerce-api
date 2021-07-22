@@ -8,16 +8,16 @@ import { config } from "dotenv";
 import auth from "./routes/auth";
 import category from "./routes/category";
 import product from "./routes/product";
-import { debugPort } from "node:process";
 
-//set env
+//config environment variable
 config();
 
 const Main = async () => {
   const app = express();
   const PORT = process.env.PORT || 5000;
-  const DB = process.env.MONGODB_URL || "mongodb://localhost/db-template";
+  const DB = process.env.MONGODB_URL || "mongodb://localhost/db-template"; //database url string
   try {
+    //connect to the database
     await mongoose.connect(DB, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -25,6 +25,7 @@ const Main = async () => {
       useCreateIndex: true,
     });
 
+    //bodyparser setup
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
