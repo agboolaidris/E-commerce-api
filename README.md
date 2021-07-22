@@ -3,9 +3,9 @@
 This is a minimal Ecommerce-api with some advance features developed using nodejs, typescript, expressjs and mongodb.
 The API is available at https://ecommerce-api-subdomain.herokuapp.com/
 
-#Authentication
+# Authentication
 
-##Admin Authentication
+## Admin Authentication
 
 ### POST api/auth/admin/register
 
@@ -108,3 +108,19 @@ The API is available at https://ecommerce-api-subdomain.herokuapp.com/
 ### The request body needs to be empty.
 
 ### The response status 200
+
+# Category
+
+## create category
+
+### Allows you to create a new category. Requires authentication and only admin is authorize.
+
+### The request body needs to be in JSON format and include the following properties:
+
+#### name - string - Required unique
+
+#### parentId - string - not-Required
+
+#### parentId is needed when you want to create a sub-category eg Television category under electronic category.
+
+### The response return category data with a status 200
