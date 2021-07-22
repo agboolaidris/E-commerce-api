@@ -3,7 +3,9 @@
 This is a minimal Ecommerce-api with some advance features developed using nodejs, typescript, expressjs and mongodb.
 The API is available at https://ecommerce-api-subdomain.herokuapp.com/
 
-##Authentication
+#Authentication
+
+##Admin Authentication
 
 ### POST api/auth/admin/register
 
@@ -54,6 +56,8 @@ The API is available at https://ecommerce-api-subdomain.herokuapp.com/
 ### The request body needs to be empty.
 
 ### The response status 200
+
+## User Authentication
 
 ### POST api/auth/user/register
 
