@@ -113,7 +113,9 @@ The API is available at https://ecommerce-api-subdomain.herokuapp.com/
 
 ## create category
 
-### Allows you to create a new category. Requires authentication and only admin is authorize.
+### POST api/category
+
+### Requires authentication and only admin is authorize.
 
 ### The request body needs to be in JSON format and include the following properties:
 
@@ -124,3 +126,41 @@ The API is available at https://ecommerce-api-subdomain.herokuapp.com/
 #### parentId is needed when you want to create a sub-category eg Television category under electronic category.
 
 ### The response return category data with a status 200
+
+## get category
+
+### GET api/category
+
+### Allows you to get all the categories. authorization not required
+
+### The request body needs to be empty
+
+### The response return array of category with a status 200.
+
+## update category
+
+### PUT api/category/:categoryId
+
+### Allows you to update category. Requires authentication and only admin is authorize.
+
+### The request body needs to be in JSON format and include the following properties:
+
+#### name - string - Required unique
+
+#### parentId - string - not-Required
+
+#### parentId is needed when you want to create a sub-category eg Television category under electronic category.
+
+### The response return category data with a status 200
+
+## Delete category
+
+### Delete api/category/:categoryId
+
+### Allows you to delete category. Requires authentication and only admin is authorize.
+
+### only category that product doesn't attach to it can be delete.
+
+### The request body needs to be empty
+
+### The response return a status 200
